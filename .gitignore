@@ -50,3 +50,4 @@ wp-config.php
 .idea/
 docker/
 .DS_Store
+vendor

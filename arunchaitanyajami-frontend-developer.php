@@ -11,3 +11,7 @@
  *
  * @package         WordPress
  */
+
+namespace Arunchaitanyajami\FrontEndDeveloper;
+
+require 'vendor/autoload.php';
