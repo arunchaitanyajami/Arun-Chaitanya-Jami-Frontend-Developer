@@ -1,38 +1,90 @@
 import { useEffect, useState } from '@wordpress/element'
 import apiFetch from '@wordpress/api-fetch';
-import { Spinner } from '@wordpress/components';
+import {
+	Modal,
+	__experimentalItemGroup as ItemGroup,
+	__experimentalItem as Item,
+	SelectControl,
+	__experimentalInputControl as InputControl
+} from '@wordpress/components';
+import NotFound from "./Notfound";
 
-function Edit({postId, meta}) {
-	const [popupInfo, setPopupInfo] = useState("");
-	const [popupVisible, setPopupVisible] = useState(false);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [itemsPerPage] = useState(8);
+function Edit({meta, savePostMeta, saveDocument}) {
 
-	const showPopup = (info) => {
-		setPopupInfo(info);
-		setPopupVisible(true);
-	};
+	const {spacex_capsules_data} = meta;
+	const {page, per_page} = JSON.parse(spacex_capsules_data);
+	const [currentPage, setCurrentPage] = useState(page ? page : 1);
+	const [itemsPerPage, setItemsPerPage] = useState(per_page ? per_page : 10);
+	const [totalItems, setTotalItems] = useState(0);
+	const [isOpen, setOpen] = useState(false);
+	const [modelData, setModelData] = useState([]);
+	const [spaceXCapsulesData, setSpaceXCapsulesData] = useState([]);
+	const [ currentCount, setCurrentCount ] = useState(0);
+	const [filterBy, setFilterBy] = useState('status');
+	const [filterValue, setFilterValue] = useState('');
 
-	const hidePopup = () => {
-		setPopupVisible(false);
-	};
+	console.log(currentCount);
+	console.log( typeof currentCount);
+
+	const savePostData = () => {
+		savePostMeta({
+			'spacex_capsules_data': JSON.stringify({
+				'page': currentPage,
+				'filter_by': filterBy,
+				'filter_value': filterValue
+			})
+		});
+		saveDocument();
+	}
+
+
+	const onClickShowMode = ( data ) => {
+		setOpen(true);
+		setModelData(data);
+	}
+
+	const fetchData = () => {
+		const queryParams = {
+			page: currentPage,
+			filter_by: filterBy,
+			filter_value: filterValue
+		};
+
+		const queryString = new URLSearchParams(queryParams).toString();
+
+		apiFetch({
+			path: 'spacex/v1/capsules?' + queryString,
+			method: 'GET'
+		}).then((response) => {
+			setSpaceXCapsulesData(response.data)
+			setTotalItems(response.total_count)
+			setItemsPerPage(response.per_page)
+			setCurrentCount(response.current_count)
+			savePostData();
+		})
+	}
+
+	useEffect(() => {
+		fetchData();
+	},[])
+
+	useEffect(() => {
+		fetchData();
+	}, [currentPage, filterValue])
 
 	const handleClick = (event) => {
 		setCurrentPage(Number(event.target.id));
 	};
 
 	const renderGridItems = () => {
-		const indexOfLastItem = currentPage * itemsPerPage;
-		const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-		const currentItems = gridItems.slice(indexOfFirstItem, indexOfLastItem);
-
-		return currentItems.map((item, index) => (
+		return spaceXCapsulesData.map((item, index) => (
 			<div
 				className="grid-item"
 				key={index}
-				onClick={() => showPopup(item)}
+				onClick={() => onClickShowMode(item) }
 			>
-				{item}
+				<div>{item.type}</div>
+				<div>{item.details}</div>
 			</div>
 		));
 	};
@@ -40,7 +92,7 @@ function Edit({postId, meta}) {
 	const renderPageNumbers = () => {
 		const pageNumbers = [];
 
-		for (let i = 1; i <= Math.ceil(gridItems.length / itemsPerPage); i++) {
+		for (let i = 1; i <= Math.ceil(currentCount / itemsPerPage); i++) {
 			pageNumbers.push(i);
 		}
 
@@ -56,25 +108,55 @@ function Edit({postId, meta}) {
 		));
 	};
 
-	const gridItems = ["Grid Item 1", "Grid Item 2", "Grid Item 3", "Grid Item 4", "Grid Item 5", "Grid Item 6", "Grid Item 7", "Grid Item 8", "Grid Item 9", "Grid Item 10", "Grid Item 11", "Grid Item 12", "Grid Item 13", "Grid Item 14", "Grid Item 15", "Grid Item 16",];
+	const renderModelContent = () => {
+		let dataJsx = [];
+		let i = 1;
+		for (let key of Object.keys(modelData)) {
+			if('missions' === key ){
+				continue;
+			}
+
+			dataJsx.push(<Item key={i}><b>{key.replace('_', ' ').toUpperCase()}</b> : {modelData[key]}</Item>);
+			i++;
+		}
+
+		return dataJsx
+	}
 
 	return (
-		<div>
-			<div className="grid-container">{renderGridItems()}</div>
-
+		<article className={'grid-capsule-block'}>
+			<section className={'grid-filter'}>
+				<section className={'grid-filter-by'}>
+					<SelectControl
+						label="Filter By"
+						value={ filterBy }
+						options={ [
+							{ label: 'Status', value: 'status' },
+							{ label: 'Original Launch', value: 'original_launch' },
+							{ label: 'Type', value: 'type' },
+						] }
+						onChange={ ( newFilter ) => setFilterBy( newFilter ) }
+						__nextHasNoMarginBottom
+					/>
+				</section>
+				<section className={'grid-filter-value'}>
+					<InputControl
+						label="Enter Text"
+						value={ filterValue }
+						onChange={ ( nextValue ) => setFilterValue( nextValue ?? '' ) }
+					/>
+				</section>
+			</section>
+			{ currentCount !== 0 ? <section className="grid-container">{renderGridItems()}</section> : <NotFound /> }
 			<ul id="page-numbers">{renderPageNumbers()}</ul>
-
-			{popupVisible && (
-				<div className="popup" id="popup">
-					<div className="popup-content">
-            <span className="close-btn" onClick={() => hidePopup()}>
-              &times;
-            </span>
-						<h2 id="grid-info">{popupInfo}</h2>
-					</div>
-				</div>
-			)}
-		</div>
+			{ isOpen && (
+				<Modal title="Capsule Data" onRequestClose={ () => setOpen(false)}>
+					<ItemGroup size="small">
+						{renderModelContent()}
+					</ItemGroup>
+				</Modal>)
+			}
+		</article>
 	);
 }
 

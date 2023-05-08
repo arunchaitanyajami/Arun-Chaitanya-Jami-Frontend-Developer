@@ -59,32 +59,44 @@ class DataFetcher {
 		if ( false === $data ) {
 			// Get data from data provider.
 			$data = $this->data_provider->get_all_capsules_data();
+			$data = $data['data'];
 
 			// Set cache for 1 hour.
-			set_transient( $cache_key, $data['data'], 1 * \HOUR_IN_SECONDS );
+			set_transient( $cache_key, $data, 1 * \HOUR_IN_SECONDS );
 		}
 
 		if ( empty( $data ) ) {
 			return array();
 		}
 
+		$total = count( $data );
 		if ( $filter_by && $filter_value ) {
 			$data = array_filter(
 				$data,
 				function ( $item ) use ( $filter_by, $filter_value ) {
-					return $item[ $filter_by ] == $filter_value;
+					return str_contains( strtolower( $item[ $filter_by ] ), strtolower( $filter_value ) ) !== false;
 				}
 			);
 		}
 
 		if ( empty( $data ) ) {
-			return array();
+			return [
+				'data'          => [],
+				'total_count'   => 0,
+				'current_count' => 0,
+				'per_page'      => $this->max_length,
+			];
 		}
 
 		$offset = ( $page - 1 ) * $this->max_length;
 		$data   = array_values( $data );
 
 		// Return data.
-		return count( $data ) > $this->max_length ? array_slice( $data, $offset, $this->max_length ) : $data;
+		return [
+			'data'          => count( $data ) > $this->max_length ? array_slice( $data, $offset, $this->max_length ) : $data,
+			'total_count'   => $total,
+			'current_count' => count( $data ),
+			'per_page'      => $this->max_length,
+		];
 	}
 }

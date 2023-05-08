@@ -31,8 +31,8 @@ add_action(
 	'rest_api_init',
 	function () {
 		register_rest_route(
-			'custom/v1',
-			'/data/',
+			'spacex/v1',
+			'/capsules',
 			array(
 				'methods'             => 'GET',
 				'callback'            => function ( \WP_REST_Request $request ) {
@@ -50,7 +50,7 @@ add_action(
 					return $data_fetcher->get_capsules_data( $page, $filter_by, $filter_value );
 				},
 				'permission_callback' => function () {
-					return ! is_admin() || is_user_logged_in();
+					return current_user_can( 'manage_options' );
 				},
 			)
 		);
@@ -61,14 +61,11 @@ add_action(
  * Register Rest Api Custom post meta to save data when user make any changes.
  */
 add_action( 'rest_api_init', function () {
-	register_meta( 'post', 'spacex-capsules-data', [
+	register_meta( 'post', 'spacex_capsules_data', [
 		'object_subtype' => 'post',
-		'single'         => false,
-		'show_in_rest'   => array(
-			'schema' => array(
-				'type'  => 'array'
-			),
-		)
+		'type'           => 'string',
+		'single'         => true,
+		'show_in_rest'   => true
 	] );
 } );
 

@@ -4,10 +4,12 @@ import { withDispatch, withSelect } from '@wordpress/data'
 import CapsulesComponent from '../Components/Edit'
 
 export const mapSelectToProps = (select) => {
-	const { getCurrentPostId } = select('core/editor')
+	const { getCurrentPostId, getCurrentPostAttribute } = select('core/editor')
+	const meta = getCurrentPostAttribute('meta')
 
 	return {
 		postId: getCurrentPostId(),
+		meta:meta
 	}
 }
 
