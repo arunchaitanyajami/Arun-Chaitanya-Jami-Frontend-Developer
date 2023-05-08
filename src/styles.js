@@ -1,0 +1,1 @@
+import "./Capsules/style.scss"

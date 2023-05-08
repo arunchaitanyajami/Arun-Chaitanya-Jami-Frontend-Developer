@@ -51,3 +51,4 @@ wp-config.php
 docker/
 .DS_Store
 vendor
+node_modules/

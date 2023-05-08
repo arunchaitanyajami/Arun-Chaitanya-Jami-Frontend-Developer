@@ -14,6 +14,10 @@
 
 namespace Arunchaitanyajami\FrontEndDeveloper;
 
+define( 'AJFD_DIR', plugin_dir_path( __FILE__ ) );
+define( 'AJFD_URL', plugin_dir_url( __FILE__ ) );
+define( 'AJFD_PLUGIN_VERSION', '1.0.0' );
+
 require 'vendor/autoload.php';
 
 use Arunchaitanyajami\FrontEndDeveloper\RestApi\SpaceXDataProvider;
@@ -52,3 +56,22 @@ add_action(
 		);
 	}
 );
+
+
+/**
+ * Enqueue block editor assets.
+ */
+add_action( 'enqueue_block_editor_assets', function () {
+	$block_settings = array(
+		'ajaxUrl' => esc_url( admin_url( 'admin-ajax.php', 'relative' ) ),
+	);
+
+	/**
+	 * Add inline script.
+	 */
+	wp_register_script( 'ajfd_blocks_assets-js', AJFD_URL . 'build/index.js', array(), AJFD_PLUGIN_VERSION, true );
+	wp_localize_script( 'ajfd_blocks_assets-js', 'ajfdBlockEditorSettings', $block_settings );
+	wp_enqueue_script( 'ajfd_blocks_assets-js' );
+
+	wp_enqueue_style( 'ajfd_blocks_assets-css', AJFD_URL . 'build/style-index.css' );
+} );

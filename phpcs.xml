@@ -36,6 +36,7 @@
 	<exclude-pattern>/languages/*</exclude-pattern>
 	<exclude-pattern>/src/*</exclude-pattern>
 	<exclude-pattern>webpack.*.js</exclude-pattern>
+	<exclude-pattern>/docker/*</exclude-pattern>
 
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
 		<exclude-pattern>inc/*</exclude-pattern>
