@@ -23,7 +23,6 @@ require 'vendor/autoload.php';
 use Arunchaitanyajami\FrontEndDeveloper\RestApi\SpaceXDataProvider;
 use Arunchaitanyajami\FrontEndDeveloper\RestApi\DataFetcher;
 
-
 /**
  * Register Custom REST API endpoint to fetch data from SpaceX Endpoint.
  */

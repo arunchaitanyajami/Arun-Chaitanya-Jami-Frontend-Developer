@@ -221,20 +221,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "mapDispatchToProps": () => (/* binding */ mapDispatchToProps),
 /* harmony export */   "mapSelectToProps": () => (/* binding */ mapSelectToProps)
 /* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
-/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _Components_Edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Components/Edit */ "./src/Capsules/Components/Edit.js");
+/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
+/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Components_Edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Components/Edit */ "./src/Capsules/Components/Edit.js");
 
 
 
 
-const NewEdit = () => {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Jami");
-};
+/**
+ * Prefetch required data, which powers block to display initial data.
+ *
+ * @param select
+ * @returns {{meta, postId}}
+ */
 const mapSelectToProps = select => {
   const {
     getCurrentPostId,
@@ -246,6 +247,13 @@ const mapSelectToProps = select => {
     meta: meta
   };
 };
+
+/**
+ * Custom dispatch events as props to saved meta on every user interaction.
+ *
+ * @param dispatch
+ * @returns {{savePostMeta(*): void}}
+ */
 const mapDispatchToProps = dispatch => {
   return {
     savePostMeta(newMeta) {
@@ -255,7 +263,7 @@ const mapDispatchToProps = dispatch => {
     }
   };
 };
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_1__.compose)([(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.withSelect)(mapSelectToProps), (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.withDispatch)(mapDispatchToProps)])(_Components_Edit__WEBPACK_IMPORTED_MODULE_3__["default"]));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_0__.compose)([(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.withSelect)(mapSelectToProps), (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.withDispatch)(mapDispatchToProps)])(_Components_Edit__WEBPACK_IMPORTED_MODULE_2__["default"]));
 
 /***/ }),
 

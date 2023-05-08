@@ -10,7 +10,7 @@ namespace Arunchaitanyajami\FrontEndDeveloper\RestApi;
 interface DataProviderInterface {
 
 	/**
-	 * Fetch all capsules data from the SpaceX api.
+	 * Fetch all capsules data from the SpaceX API.
 	 *
 	 * @return array
 	 */
