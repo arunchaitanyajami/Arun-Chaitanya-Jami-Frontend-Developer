@@ -57,6 +57,20 @@ add_action(
 	}
 );
 
+/**
+ * Register Rest Api Custom post meta to save data when user make any changes.
+ */
+add_action( 'rest_api_init', function () {
+	register_meta( 'post', 'spacex-capsules-data', [
+		'object_subtype' => 'post',
+		'single'         => false,
+		'show_in_rest'   => array(
+			'schema' => array(
+				'type'  => 'array'
+			),
+		)
+	] );
+} );
 
 /**
  * Enqueue block editor assets.
