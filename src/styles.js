@@ -1,1 +1,1 @@
-import "./Capsules/style.scss"
+import './Capsules/style.scss';

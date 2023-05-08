@@ -1,86 +1,86 @@
 {
-  "name": "arunchaitanyajami/front-end-developer",
-  "type": "wordpress-plugin",
-  "license": "MIT",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "autoload": {
-    "psr-4": {
-      "Arunchaitanyajami\\FrontEndDeveloper\\": "inc/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Arunchaitanyajami\\FrontEndDeveloper\\Tests\\": "tests/"
-    }
-  },
-  "authors": [
-    {
-      "name": "Arun Chaitanya Jami",
-      "email": "arunchaitanyajami@gmail.com"
-    }
-  ],
-  "require": {
-    "php": "~8.0",
-    "composer/installers": "^1.7"
-  },
-  "config": {
-    "platform": {
-      "php": "8.0"
-    },
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true,
-      "composer/installers": true
-    }
-  },
-  "repositories": [
-    {
-      "type": "package",
-      "package": [
-        {
-          "name": "wordpress/wordpress",
-          "version": "6.2",
-          "source": {
-            "url": "https://github.com/wordpress/wordpress",
-            "type": "git",
-            "reference": "17e2eff"
-          }
-        }
-      ]
-    },
-    {
-      "type": "package",
-      "package": [
-        {
-          "name": "wordpress/wordpress-develop",
-          "version": "6.2.0",
-          "source": {
-            "url": "https://github.com/wordpress/wordpress-develop",
-            "type": "git",
-            "reference": "b829903"
-          }
-        }
-      ]
-    }
-  ],
-  "scripts": {
-    "lint:phpcs": "@php ./vendor/bin/phpcs .",
-    "lint:phpcbf": "@php ./vendor/bin/phpcbf .",
-    "test:unit": "@php ./vendor/bin/phpunit --testsuite testing --testdox"
-  },
-  "require-dev": {
-    "10up/wp_mock": "^0.5.0",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-    "wp-coding-standards/wpcs": "*",
-    "automattic/vipwpcs": "*",
-    "phpunit/phpunit": "*",
-    "wordpress/wordpress": "6.2",
-    "wordpress/wordpress-develop": "6.2.0",
-    "slim/slim": "*",
-    "slim/psr7": "*",
-    "squizlabs/php_codesniffer": "*",
-    "phpcompatibility/phpcompatibility-wp": "*",
-    "yoast/phpunit-polyfills": "*",
-    "mockery/mockery": "^1.5"
-  }
+	"name": "arunchaitanyajami/front-end-developer",
+	"type": "wordpress-plugin",
+	"license": "MIT",
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"autoload": {
+		"psr-4": {
+			"Arunchaitanyajami\\FrontEndDeveloper\\": "inc/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Arunchaitanyajami\\FrontEndDeveloper\\Tests\\": "tests/"
+		}
+	},
+	"authors": [
+		{
+			"name": "Arun Chaitanya Jami",
+			"email": "arunchaitanyajami@gmail.com"
+		}
+	],
+	"require": {
+		"php": "~8.0",
+		"composer/installers": "^1.7"
+	},
+	"config": {
+		"platform": {
+			"php": "8.0"
+		},
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"composer/installers": true
+		}
+	},
+	"repositories": [
+		{
+			"type": "package",
+			"package": [
+				{
+					"name": "wordpress/wordpress",
+					"version": "6.2",
+					"source": {
+						"url": "https://github.com/wordpress/wordpress",
+						"type": "git",
+						"reference": "17e2eff"
+					}
+				}
+			]
+		},
+		{
+			"type": "package",
+			"package": [
+				{
+					"name": "wordpress/wordpress-develop",
+					"version": "6.2.0",
+					"source": {
+						"url": "https://github.com/wordpress/wordpress-develop",
+						"type": "git",
+						"reference": "b829903"
+					}
+				}
+			]
+		}
+	],
+	"scripts": {
+		"lint:phpcs": "@php ./vendor/bin/phpcs .",
+		"lint:phpcbf": "@php ./vendor/bin/phpcbf .",
+		"test:unit": "@php ./vendor/bin/phpunit --testsuite testing --testdox"
+	},
+	"require-dev": {
+		"10up/wp_mock": "^0.5.0",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+		"wp-coding-standards/wpcs": "*",
+		"automattic/vipwpcs": "*",
+		"phpunit/phpunit": "*",
+		"wordpress/wordpress": "6.2",
+		"wordpress/wordpress-develop": "6.2.0",
+		"slim/slim": "*",
+		"slim/psr7": "*",
+		"squizlabs/php_codesniffer": "*",
+		"phpcompatibility/phpcompatibility-wp": "*",
+		"yoast/phpunit-polyfills": "*",
+		"mockery/mockery": "^1.5"
+	}
 }

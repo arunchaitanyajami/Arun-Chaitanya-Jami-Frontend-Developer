@@ -1,30 +1,32 @@
-import { compose } from '@wordpress/compose'
-import { withDispatch, withSelect } from '@wordpress/data'
+import { compose } from '@wordpress/compose';
+import { withDispatch, withSelect } from '@wordpress/data';
 
-import CapsulesComponent from '../Components/Edit'
+import CapsulesComponent from '../Components/Edit';
 
-export const mapSelectToProps = (select) => {
-	const { getCurrentPostId, getCurrentPostAttribute } = select('core/editor')
-	const meta = getCurrentPostAttribute('meta')
+const NewEdit = () => {
+	return <div>Jami</div>;
+};
+
+export const mapSelectToProps = ( select ) => {
+	const { getCurrentPostId, getCurrentPostAttribute } =
+		select( 'core/editor' );
+	const meta = getCurrentPostAttribute( 'meta' );
 
 	return {
 		postId: getCurrentPostId(),
-		meta:meta
-	}
-}
+		meta: meta,
+	};
+};
 
-export const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = ( dispatch ) => {
 	return {
-		savePostMeta (newMeta) {
-			dispatch('core/editor').editPost({ meta: newMeta })
+		savePostMeta( newMeta ) {
+			dispatch( 'core/editor' ).editPost( { meta: newMeta } );
 		},
-		saveDocument () {
-			dispatch('core/editor').savePost()
-		},
-	}
-}
+	};
+};
 
-export default compose([
-	withSelect(mapSelectToProps),
-	withDispatch(mapDispatchToProps),
-])(CapsulesComponent)
+export default compose( [
+	withSelect( mapSelectToProps ),
+	withDispatch( mapDispatchToProps ),
+] )( CapsulesComponent );

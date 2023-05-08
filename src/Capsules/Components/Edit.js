@@ -1,161 +1,187 @@
-import { useEffect, useState } from '@wordpress/element'
+import { useEffect, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import {
 	Modal,
 	__experimentalItemGroup as ItemGroup,
 	__experimentalItem as Item,
 	SelectControl,
-	__experimentalInputControl as InputControl
+	__experimentalInputControl as InputControl,
 } from '@wordpress/components';
-import NotFound from "./Notfound";
+import NotFound from './Notfound';
+import { __ } from '@wordpress/i18n';
 
-function Edit({meta, savePostMeta, saveDocument}) {
-
-	const {spacex_capsules_data} = meta;
-	const {page, per_page} = JSON.parse(spacex_capsules_data);
-	const [currentPage, setCurrentPage] = useState(page ? page : 1);
-	const [itemsPerPage, setItemsPerPage] = useState(per_page ? per_page : 10);
-	const [totalItems, setTotalItems] = useState(0);
-	const [isOpen, setOpen] = useState(false);
-	const [modelData, setModelData] = useState([]);
-	const [spaceXCapsulesData, setSpaceXCapsulesData] = useState([]);
-	const [ currentCount, setCurrentCount ] = useState(0);
-	const [filterBy, setFilterBy] = useState('status');
-	const [filterValue, setFilterValue] = useState('');
-
-	console.log(currentCount);
-	console.log( typeof currentCount);
+function Edit( { meta, savePostMeta } ) {
+	const { spacex_capsules_data } = meta;
+	const { page, per_page } = JSON.parse( spacex_capsules_data );
+	const [ currentPage, setCurrentPage ] = useState( page ? page : 1 );
+	const [ itemsPerPage, setItemsPerPage ] = useState(
+		per_page ? per_page : 10
+	);
+	const [ totalItems, setTotalItems ] = useState( 0 );
+	const [ isOpen, setOpen ] = useState( false );
+	const [ modelData, setModelData ] = useState( [] );
+	const [ spaceXCapsulesData, setSpaceXCapsulesData ] = useState( [] );
+	const [ currentCount, setCurrentCount ] = useState( 0 );
+	const [ filterBy, setFilterBy ] = useState( 'status' );
+	const [ filterValue, setFilterValue ] = useState( '' );
 
 	const savePostData = () => {
-		savePostMeta({
-			'spacex_capsules_data': JSON.stringify({
-				'page': currentPage,
-				'filter_by': filterBy,
-				'filter_value': filterValue
-			})
-		});
-		saveDocument();
-	}
-
+		savePostMeta( {
+			spacex_capsules_data: JSON.stringify( {
+				page: currentPage,
+				filter_by: filterBy,
+				filter_value: filterValue,
+			} ),
+		} );
+	};
 
 	const onClickShowMode = ( data ) => {
-		setOpen(true);
-		setModelData(data);
-	}
+		setOpen( true );
+		setModelData( data );
+	};
 
 	const fetchData = () => {
 		const queryParams = {
 			page: currentPage,
 			filter_by: filterBy,
-			filter_value: filterValue
+			filter_value: filterValue,
 		};
 
-		const queryString = new URLSearchParams(queryParams).toString();
+		const queryString = new URLSearchParams( queryParams ).toString();
 
-		apiFetch({
+		apiFetch( {
 			path: 'spacex/v1/capsules?' + queryString,
-			method: 'GET'
-		}).then((response) => {
-			setSpaceXCapsulesData(response.data)
-			setTotalItems(response.total_count)
-			setItemsPerPage(response.per_page)
-			setCurrentCount(response.current_count)
+			method: 'GET',
+		} ).then( ( response ) => {
+			setSpaceXCapsulesData( response.data );
+			setTotalItems( response.total_count );
+			setItemsPerPage( response.per_page );
+			setCurrentCount( response.current_count );
 			savePostData();
-		})
-	}
+		} );
+	};
 
-	useEffect(() => {
+	useEffect( () => {
 		fetchData();
-	},[])
+	}, [] );
 
-	useEffect(() => {
+	useEffect( () => {
 		fetchData();
-	}, [currentPage, filterValue])
+	}, [ currentPage, filterValue ] );
 
-	const handleClick = (event) => {
-		setCurrentPage(Number(event.target.id));
+	const handleClick = ( event ) => {
+		setCurrentPage( Number( event.target.id ) );
 	};
 
 	const renderGridItems = () => {
-		return spaceXCapsulesData.map((item, index) => (
+		return spaceXCapsulesData.map( ( item, index ) => (
 			<div
 				className="grid-item"
-				key={index}
-				onClick={() => onClickShowMode(item) }
+				key={ index }
+				onClick={ () => onClickShowMode( item ) }
 			>
-				<div>{item.type}</div>
-				<div>{item.details}</div>
+				<div className={'grid-item__title'}>{ item.type }</div>
+				<div className={'grid-item__description'}>{ item.details }</div>
 			</div>
-		));
+		) );
 	};
 
 	const renderPageNumbers = () => {
 		const pageNumbers = [];
 
-		for (let i = 1; i <= Math.ceil(currentCount / itemsPerPage); i++) {
-			pageNumbers.push(i);
+		for ( let i = 1; i <= Math.ceil( currentCount / itemsPerPage ); i++ ) {
+			pageNumbers.push( i );
 		}
 
-		return pageNumbers.map((number) => (
+		return pageNumbers.map( ( number ) => (
 			<li
-				key={number}
-				id={number}
-				onClick={handleClick}
-				className={ currentPage === number ? 'active' : null}
+				key={ number }
+				id={ number }
+				onClick={ handleClick }
+				className={ currentPage === number ? 'active' : null }
 			>
-				{number}
+				{ number }
 			</li>
-		));
+		) );
 	};
 
 	const renderModelContent = () => {
 		let dataJsx = [];
 		let i = 1;
-		for (let key of Object.keys(modelData)) {
-			if('missions' === key ){
+		for ( let key of Object.keys( modelData ) ) {
+			if ( 'missions' === key ) {
 				continue;
 			}
 
-			dataJsx.push(<Item key={i}><b>{key.replace('_', ' ').toUpperCase()}</b> : {modelData[key]}</Item>);
+			dataJsx.push(
+				<Item key={ i }>
+					<b>{ key.replace( '_', ' ' ).toUpperCase() }</b> :{ ' ' }
+					{ modelData[ key ] }
+				</Item>
+			);
 			i++;
 		}
 
-		return dataJsx
-	}
+		return dataJsx;
+	};
 
 	return (
-		<article className={'grid-capsule-block'}>
-			<section className={'grid-filter'}>
-				<section className={'grid-filter-by'}>
+		<article className={ 'grid-capsule-block' }>
+			<h2 className={ 'grid-capsule-heading' }>
+				{ __( 'SpaceX : Capsule Block', 'spacex-capsule-block' ) }
+			</h2>
+			<section className={ 'grid-filter' }>
+				<section className={ 'grid-filter-by' }>
 					<SelectControl
-						label="Filter By"
+						label={ __( 'Filter By', 'spacex-capsule-block' ) }
 						value={ filterBy }
 						options={ [
-							{ label: 'Status', value: 'status' },
-							{ label: 'Original Launch', value: 'original_launch' },
-							{ label: 'Type', value: 'type' },
+							{
+								label: __( 'Status', 'spacex-capsule-block' ),
+								value: 'status',
+							},
+							{
+								label: __(
+									'Original Launch',
+									'spacex-capsule-block'
+								),
+								value: 'original_launch',
+							},
+							{
+								label: __( 'Type', 'spacex-capsule-block' ),
+								value: 'type',
+							},
 						] }
 						onChange={ ( newFilter ) => setFilterBy( newFilter ) }
 						__nextHasNoMarginBottom
 					/>
 				</section>
-				<section className={'grid-filter-value'}>
+				<section className={ 'grid-filter-value' }>
 					<InputControl
-						label="Enter Text"
+						label={ __( 'Enter Text', 'spacex-capsule-block' ) }
 						value={ filterValue }
-						onChange={ ( nextValue ) => setFilterValue( nextValue ?? '' ) }
+						onChange={ ( nextValue ) =>
+							setFilterValue( nextValue ?? '' )
+						}
 					/>
 				</section>
 			</section>
-			{ currentCount !== 0 ? <section className="grid-container">{renderGridItems()}</section> : <NotFound /> }
-			<ul id="page-numbers">{renderPageNumbers()}</ul>
+			{ currentCount !== 0 ? (
+				<section className="grid-container">
+					{ renderGridItems() }
+				</section>
+			) : (
+				<NotFound />
+			) }
+			<ul id="page-numbers">{ renderPageNumbers() }</ul>
 			{ isOpen && (
-				<Modal title="Capsule Data" onRequestClose={ () => setOpen(false)}>
-					<ItemGroup size="small">
-						{renderModelContent()}
-					</ItemGroup>
-				</Modal>)
-			}
+				<Modal
+					title={ __( 'Capsule Data', 'spacex-capsule-block' ) }
+					onRequestClose={ () => setOpen( false ) }
+				>
+					<ItemGroup size="small">{ renderModelContent() }</ItemGroup>
+				</Modal>
+			) }
 		</article>
 	);
 }
