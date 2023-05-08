@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "reset" ]
+then
+  docker-compose rm -fsv
+  echo "volume reset"
+  # shellcheck disable=SC2046
+  docker volume rm $(docker volume ls -q | grep docker)
+  docker-compose build --no-cache
+fi
+
+docker-compose -p docker up -d
