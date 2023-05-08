@@ -1,6 +1,6 @@
 import defaultOptions from '../defaultOptions';
 import Edit from './Container/Edit';
-import {__} from "@wordpress/i18n";
+import { __ } from '@wordpress/i18n';
 
 export const name = 'spacex/capsules-block';
 export const options = {

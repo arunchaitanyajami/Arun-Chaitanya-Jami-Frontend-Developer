@@ -10,9 +10,8 @@ import {
 import NotFound from './Notfound';
 import { __ } from '@wordpress/i18n';
 
-function Edit( { meta, savePostMeta } ) {
-	const { spacex_capsules_data } = meta;
-	const { page, per_page } = JSON.parse( spacex_capsules_data );
+function Edit( { spaceXData, savePostMeta } ) {
+	const { page, per_page } = JSON.parse( spaceXData );
 	const [ currentPage, setCurrentPage ] = useState( page ? page : 1 );
 	const [ itemsPerPage, setItemsPerPage ] = useState(
 		per_page ? per_page : 10
@@ -80,8 +79,10 @@ function Edit( { meta, savePostMeta } ) {
 				key={ index }
 				onClick={ () => onClickShowMode( item ) }
 			>
-				<div className={'grid-item__title'}>{ item.type }</div>
-				<div className={'grid-item__description'}>{ item.details }</div>
+				<div className={ 'grid-item__title' }>{ item.type }</div>
+				<div className={ 'grid-item__description' }>
+					{ item.details }
+				</div>
 			</div>
 		) );
 	};

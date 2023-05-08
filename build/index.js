@@ -29,16 +29,13 @@ __webpack_require__.r(__webpack_exports__);
 
 function Edit(_ref) {
   let {
-    meta,
+    spaceXData,
     savePostMeta
   } = _ref;
   const {
-    spacex_capsules_data
-  } = meta;
-  const {
     page,
     per_page
-  } = JSON.parse(spacex_capsules_data);
+  } = JSON.parse(spaceXData);
   const [currentPage, setCurrentPage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(page ? page : 1);
   const [itemsPerPage, setItemsPerPage] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(per_page ? per_page : 10);
   const [totalItems, setTotalItems] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(0);
@@ -244,7 +241,10 @@ const mapSelectToProps = select => {
   const meta = getCurrentPostAttribute('meta');
   return {
     postId: getCurrentPostId(),
-    meta: meta
+    spaceXData: meta.spacex_capsules_data ? meta.spacex_capsules_data : JSON.stringify({
+      page: 1,
+      per_page: 10
+    })
   };
 };
 

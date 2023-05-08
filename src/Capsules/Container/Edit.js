@@ -16,7 +16,12 @@ export const mapSelectToProps = ( select ) => {
 
 	return {
 		postId: getCurrentPostId(),
-		meta: meta,
+		spaceXData: meta.spacex_capsules_data
+			? meta.spacex_capsules_data
+			: JSON.stringify( {
+					page: 1,
+					per_page: 10,
+			  } ),
 	};
 };
 
